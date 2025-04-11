@@ -16,7 +16,7 @@ sudo apt install -y \
     git \
     wget \
     neovim \
-    lua \
+    lua5.3 5.3.3-1.1ubuntu2 \
     unzip \
     build-essential \
     ca-certificates \
