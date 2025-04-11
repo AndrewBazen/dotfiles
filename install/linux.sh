@@ -16,15 +16,14 @@ sudo apt install -y \
     git \
     wget \
     neovim \
-    lua5.4 \
+    lua \
     unzip \
     build-essential \
     ca-certificates \
     gnupg \
     lsb-release \
     fzf \
-    ripgrep \
-    treesitter \
+    ripgrep
 
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."
