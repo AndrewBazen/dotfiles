@@ -10,7 +10,6 @@ if not vim.loop.fs_stat(lazypath) then  -- Check if the lazy.nvim directory exis
   })
 end
 vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
-vim.g.mapleader = " "  -- Set the leader key to space
 
 require("vim-options")  -- Load Vim options from a separate file
 require("lazy").setup("plugins")  -- Load plugins from a separate file
