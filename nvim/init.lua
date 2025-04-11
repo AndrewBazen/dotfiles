@@ -1,4 +1,4 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"  -- Path to the lazy.nvim plugin
+local lazypath = tostring(vim.fn.stdpath("data")) .. "/lazy/lazy.nvim"  -- Ensure stdpath returns a string
 if vim.fn.isdirectory(lazypath) then
   vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
 else
