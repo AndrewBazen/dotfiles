@@ -35,12 +35,3 @@ fi
 if [[ -r "${HOME}/.local/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
   source "${HOME}/.local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
-
-# nvim
-if [[ -r "${HOME}/.config/nvim/init.lua" ]]; then
-  source "${HOME}/.config/nvim/init.lua"
-fi
-# git
-if [[ -r "${HOME}/.gitconfig" ]]; then
-  source "${HOME}/.gitconfig"
-fi
