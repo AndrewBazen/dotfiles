@@ -1,0 +1,3 @@
+@echo off
+echo Running Windows CMD setup...
+powershell -ExecutionPolicy Bypass -File windows.ps1

@@ -1,6 +1,11 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"  -- Path to the lazy.nvim plugin
+if vim.fn.isdirectory(lazypath) then
+  vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
+else
+  vim.opt.rtp:prepend(vim.fn.stdpath("data") .. "/lazy/lazy.nvim")  -- Prepend the lazy.nvim path to runtime path
+end
+if not vim.loop.fs_stat(lazypath) then -- Check if the lazy.nvim directory exists
+  vim.fn.system({  
     "git",
     "clone",
     "--filter=blob:none",
@@ -9,7 +14,8 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
+vim.g.mapleader = " "  -- Set the leader key to space
 
-require("vim-options")
-require("lazy").setup("plugins")
+require("vim-options")  -- Load Vim options from a separate file
+require("lazy").setup("plugins")  -- Load plugins from a separate file
