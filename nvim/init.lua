@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"  -- Ensure stdpath uses correct quotes
-if vim.fn.isdirectory(lazypath) then
+if vim.fn.isdirectory(lazypath) == 1 then  -- Check if the directory exists (returns 1 for true)
   vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
 else
   vim.opt.rtp:prepend(vim.fn.stdpath("data") .. "/lazy/lazy.nvim")  -- Prepend the lazy.nvim path to runtime path
