@@ -1,16 +1,11 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"  -- Ensure stdpath uses correct quotes
-if vim.fn.isdirectory(lazypath) == 1 then  -- Check if the directory exists (returns 1 for true)
-  vim.opt.rtp:prepend(lazypath)  -- Prepend the lazy.nvim path to runtime path
-else
-  vim.opt.rtp:prepend(vim.fn.stdpath("data") .. "/lazy/lazy.nvim")  -- Prepend the lazy.nvim path to runtime path
-end
-if not vim.loop.fs_stat(lazypath) then -- Check if the lazy.nvim directory exists
-  vim.fn.system({  
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"  -- Construct the lazy.nvim path
+if not vim.loop.fs_stat(lazypath) then  -- Check if the lazy.nvim directory exists
+  vim.fn.system({
     "git",
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",  -- Latest stable release
     lazypath,
   })
 end
