@@ -17,15 +17,16 @@ This repository contains configuration files (dotfiles) for commonly used progra
 2. Navigate to the directory:
     ```bash
     cd dotfiles
-    3. Execute the `setup.sh` script:
-       Ensure the script has executable permissions. If not, you can grant them using:
-        ```bash
-        chmod +x setup.sh
-        ```
-        Then run the script:
-        ```bash
-        ./setup.sh
-        ```
+    ```
+3. Execute the `setup.sh` script:
+   Ensure the script has executable permissions. If not, you can grant them using:
+    ```bash
+    chmod +x setup.sh
+    ```
+   Then run the script:
+    ```bash
+    ./setup.sh
+    ```
 
 ## Contributing
 
