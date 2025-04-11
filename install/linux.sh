@@ -23,7 +23,8 @@ sudo apt install -y \
     gnupg \
     lsb-release \
     fzf \
-    ripgrep
+    ripgrep \
+    fontconfig
 
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."
@@ -31,7 +32,7 @@ FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
 wget -O "$FONT_DIR/JetBrainsMonoNerdFont-Regular.ttf" https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip
 unzip -o "$FONT_DIR/JetBrainsMonoNerdFont-Regular.ttf" -d "$FONT_DIR"
-fc-cache -fv
+fc-cache -fv 
 
 # Install Starship prompt
 echo "🌟 Installing Starship..."
