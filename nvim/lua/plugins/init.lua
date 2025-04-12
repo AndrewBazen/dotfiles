@@ -6,4 +6,5 @@ return {
     { import = "plugins.lsp-config" },  -- Import the LSP plugin configuration
     { import = "plugins.gitsigns" },  -- Import the comment plugin configuration
     { import = "plugins.vim-test" },  -- Import the indent-blankline plugin configuration
+    { import = "plugins.swagger-preview" }, 
 }
