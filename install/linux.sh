@@ -47,6 +47,7 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     git \
     wget \
     tmux \
+    python3.12 \
     python3.12-venv \
     neovim \
     lua5.3 \
@@ -68,7 +69,8 @@ elif [[ "$DISTRO_TYPE" == "arch" ]]; then
     git \
     wget \
     tmux \
-    python3.12-venv \
+    python \
+    python-virtualenv \
     neovim \
     lua \
     unzip \
@@ -88,6 +90,7 @@ elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
     git \
     wget \
     tmux \
+    python3.12 \
     python3.12-venv \
     neovim \
     lua \
