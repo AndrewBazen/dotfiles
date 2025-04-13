@@ -28,11 +28,11 @@ echo "Detected Linux distribution: $DISTRO_TYPE"
 # Update & upgrade based on distribution
 echo "🔄 Updating system..."
 if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
-  sudo apt update && sudo apt upgrade -y
+  apt update && apt upgrade -y
 elif [[ "$DISTRO_TYPE" == "arch" ]]; then
-  sudo pacman -Syu --noconfirm
+  pacman -Syu --noconfirm
 elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
-  sudo dnf upgrade --refresh -y
+  dnf upgrade --refresh -y
 else
   echo "Unsupported Linux distribution. Skipping system update."
 fi
@@ -40,7 +40,7 @@ fi
 # Install essential packages depending on the distribution
 echo "📦 Installing base packages..."
 if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
-  sudo apt install -y \
+  apt install -y \
     zsh \
     curl \
     gcc \
@@ -59,7 +59,7 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     fd-find \
     ripgrep
 elif [[ "$DISTRO_TYPE" == "arch" ]]; then
-  sudo pacman -S --noconfirm \
+  pacman -S --noconfirm \
     zsh \
     curl \
     gcc \
@@ -77,7 +77,7 @@ elif [[ "$DISTRO_TYPE" == "arch" ]]; then
     fd \
     ripgrep
 elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
-  sudo dnf install -y \
+  dnf install -y \
     zsh \
     curl \
     gcc \
@@ -138,13 +138,13 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
   LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
   curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
   tar xf lazygit.tar.gz lazygit
-  sudo install lazygit -D -t /usr/local/bin/
+  install lazygit -D -t /usr/local/bin/
   rm lazygit.tar.gz lazygit
 elif [[ "$DISTRO_TYPE" == "arch" ]]; then
-  sudo pacman -S lazygit --noconfirm
+  pacman -S lazygit --noconfirm
 elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
-  sudo dnf copr enable atim/lazygit -y
-  sudo dnf install lazygit -y
+  dnf copr enable atim/lazygit -y
+  dnf install lazygit -y
 else
   echo "Unsupported Linux distribution. Skipping LazyGit installation."
 fi
@@ -157,11 +157,11 @@ fi
 # Install C compiler for Tree-sitter
 echo "📦 Installing C compiler for Tree-sitter..."
 if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
-  sudo apt install clang gcc -y
+  apt install clang gcc -y
 elif [[ "$DISTRO_TYPE" == "arch" ]]; then
-  sudo pacman -S clang gcc --noconfirm
+  pacman -S clang gcc --noconfirm
 elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
-  sudo dnf install clang gcc -y
+  dnf install clang gcc -y
 else
   echo "Unsupported Linux distribution. Skipping C compiler installation."
 fi
