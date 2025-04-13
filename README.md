@@ -2,6 +2,15 @@
 
 This repository contains configuration files (dotfiles) for commonly used programs. These files help streamline setup and ensure consistency across environments.
 
+Current support for the following OSs:
+
+Windows
+MacOS
+Linux
+    - Ubuntu/Debian
+    - Arch linux
+    - Fedora
+
 ## Features
 
 - Pre-configured settings for frequently used tools.
