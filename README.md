@@ -4,9 +4,9 @@ This repository contains configuration files (dotfiles) for commonly used progra
 
 Current support for the following OSs:
 
-Windows
-MacOS
-Linux
+1. Windows
+2. MacOS
+3. Linux:
     - Ubuntu/Debian
     - Arch linux
     - Fedora
