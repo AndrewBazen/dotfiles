@@ -17,7 +17,7 @@ brew upgrade
 
 # Install essential packages
 echo "📦 Installing base packages..."
-brew install neovim zsh lua git curl starship wget unzip
+brew install neovim zsh lua5.3 lazygit lsb-release git curl starship wget unzip fzf fd-find ripgrep npm ca-certificates gnupg build-essential tmux
 
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."

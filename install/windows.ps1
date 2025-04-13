@@ -18,6 +18,14 @@ winget install --id Starship.Starship -e --source winget
 winget install --id Lua.Lua -e --source winget
 winget install --id curl.curl -e --source winget
 winget install --id Microsoft.WindowsTerminal -e --source winget
+winget install --id Microsoft.VisualStudioCode -e --source winget
+# installing other packages
+Write-Host "📦 Installing other packages..."
+#install zsh lazygit lsb-release wget unzip fzf fd-find ripgrep npm ca-certificates gnupg build-essential tmux
+winget install --id GitHub.cli -e --source winget
+winget install --id npm.npm -e --source winget
+
+
 
 # Install JetBrains Nerd Font
 Write-Host "🔤 Installing JetBrains Nerd Font..."
