@@ -16,8 +16,6 @@ if ! git config --global user.email >/dev/null; then
 fi
 
 # Setup basic git settings
-git config --global pull.rebase false
 git config --global init.defaultBranch main
-git config --global color.ui auto
 
 echo "✅ Common setup complete."
