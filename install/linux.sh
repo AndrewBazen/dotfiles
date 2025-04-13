@@ -48,7 +48,6 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     wget \
     tmux \
     python3 \
-    neovim \
     lua5.3 \
     unzip \
     build-essential \
@@ -69,7 +68,6 @@ elif [[ "$DISTRO_TYPE" == "arch" ]]; then
     wget \
     tmux \
     python-virtualenv \
-    neovim \
     lua \
     unzip \
     base-devel \
@@ -89,7 +87,6 @@ elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
     wget \
     tmux \
     python3 \
-    neovim \
     lua \
     unzip \
     make \
@@ -106,6 +103,16 @@ elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
     golang
 else
   echo "Unsupported Linux distribution. Skipping package installation."
+fi
+
+# run nvim shell script to install latest version of neovim
+echo "🔧 Installing Neovim..."
+chmod +x ./install/neovim.sh
+./install/neovim.sh
+if command -v nvim &>/dev/null; then
+  echo "Neovim installed successfully."
+else
+  echo "Neovim installation failed."
 fi
 
 # Install JetBrains Nerd Font
