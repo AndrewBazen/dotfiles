@@ -47,6 +47,7 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     git \
     wget \
     tmux \
+    python3.12-venv \
     neovim \
     lua5.3 \
     unzip \
@@ -57,7 +58,8 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     lsb-release \
     fzf \
     fd-find \
-    ripgrep
+    ripgrep \
+    golang
 elif [[ "$DISTRO_TYPE" == "arch" ]]; then
   pacman -S --noconfirm \
     zsh \
@@ -66,6 +68,7 @@ elif [[ "$DISTRO_TYPE" == "arch" ]]; then
     git \
     wget \
     tmux \
+    python3.12-venv \
     neovim \
     lua \
     unzip \
@@ -75,7 +78,8 @@ elif [[ "$DISTRO_TYPE" == "arch" ]]; then
     gnupg \
     fzf \
     fd \
-    ripgrep
+    ripgrep \
+    go
 elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
   dnf install -y \
     zsh \
@@ -84,6 +88,7 @@ elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
     git \
     wget \
     tmux \
+    python3.12-venv \
     neovim \
     lua \
     unzip \
@@ -97,7 +102,8 @@ elif [[ "$DISTRO_TYPE" == "fedora" ]]; then
     lsb-release \
     fzf \
     fd-find \
-    ripgrep
+    ripgrep \
+    golang
 else
   echo "Unsupported Linux distribution. Skipping package installation."
 fi
@@ -124,12 +130,13 @@ else
   echo "Starship installation failed."
 fi
 
-# setup tmux configuration
+# Setup tmux configuration
 echo "📦 Setting up tmux configuration..."
-if ln -s "$HOME/dotfiles/tmux/.tmux.conf" ~/.tmux.conf; then
+if [ ! -L "$HOME/.tmux.conf" ]; then
+  ln -s "$HOME/dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
   echo "Tmux configuration symlink created successfully."
 else
-  echo "Tmux configuration symlink already exists or failed to create."
+  echo "Tmux configuration symlink already exists."
 fi
 
 # Install LazyGit
@@ -177,8 +184,8 @@ else
 fi
 
 # Add Starship to .zshrc if not already added
-if ! grep -q "eval '$(starship init zsh)'" ~/.zshrc 2>/dev/null; then
-  echo "eval '$(starship init zsh)'" >>~/.zshrc
+if ! grep -q 'eval "$(starship init zsh)"' ~/.zshrc 2>/dev/null; then
+  echo 'eval "$(starship init zsh)"' >>~/.zshrc
 fi
 
 # Set Zsh as default shell if not already
