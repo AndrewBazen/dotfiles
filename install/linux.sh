@@ -48,7 +48,6 @@ if [[ "$DISTRO_TYPE" == "ubuntu" || "$DISTRO_TYPE" == "debian" ]]; then
     wget \
     tmux \
     python3 \
-    python3.12-venv \
     neovim \
     lua5.3 \
     unzip \
