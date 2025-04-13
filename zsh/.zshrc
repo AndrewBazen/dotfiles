@@ -46,4 +46,4 @@ lg()
             cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
             rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
     fi
-}
+}export PATH=$PATH:/snap/bin
