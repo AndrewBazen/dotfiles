@@ -36,14 +36,4 @@ if [[ -r "${HOME}/.local/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; 
   source "${HOME}/.local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-lg()
-{
-    export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
-
-    lazygit "$@"
-
-    if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
-            cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
-            rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
-    fi
-}export PATH=$PATH:/snap/bin
+export PATH=$PATH:/snap/bin

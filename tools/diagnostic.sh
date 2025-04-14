@@ -32,7 +32,13 @@ echo "===================================="
 echo "🔤 Nerd Font Glyph Test"
 echo "===================================="
 
-echo "Symbols: 󰀵 󰌽 󰍲 󰣇 󰣚       "
+echo "Testing Nerd Font glyphs..."
+echo "󰀵 󰌽 󰍲 󰣇 󰣚       "
+
+echo "if you see these symbols, the font is installed correctly."
+echo "If you see boxes or question marks, the font is not installed correctly."
+echo "Refer to repo documentation for commands to install the font:"
+
 
 echo "===================================="
 echo "󰴇 Neovim Diagnostics"
@@ -49,8 +55,6 @@ if command -v nvim &>/dev/null; then
     echo "Checking if Lazy.nvim is loaded..."
     if nvim --headless "+lua print(vim.inspect(require('lazy')))" +qa >/dev/null 2>&1; then
         echo "Lazy.nvim is installed."
-        echo "Listing loaded plugins..."
-        nvim --headless "+lua for name, _ in pairs(require('lazy').plugins()) do print(name) end" +qa
     else
         echo "Lazy.nvim is NOT installed or failed to load."
     fi
