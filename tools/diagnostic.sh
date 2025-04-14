@@ -50,7 +50,7 @@ if command -v nvim &>/dev/null; then
     if nvim --headless "+lua print(vim.inspect(require('lazy')))" +qa >/dev/null 2>&1; then
         echo "Lazy.nvim is installed."
         echo "Listing loaded plugins..."
-        nvim --headless "+lua print(vim.inspect(require('lazy').plugins()))" +qa
+        nvim --headless "+lua for name, _ in pairs(require('lazy').plugins()) do print(name) end" +qa
     else
         echo "Lazy.nvim is NOT installed or failed to load."
     fi
