@@ -119,17 +119,17 @@ echo "🔧 Installing Node.js 20.x..."
 
 if command -v pacman &>/dev/null; then
     echo "Detected Arch Linux."
-    sudo pacman -Syu --noconfirm nodejs npm
+    pacman -Syu --noconfirm nodejs npm
 
 elif command -v dnf &>/dev/null; then
     echo "Detected Fedora."
-    curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
-    sudo dnf install -y nodejs
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+    dnf install -y nodejs
 
 elif command -v apt &>/dev/null; then
     echo "Detected Debian/Ubuntu."
-    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-    sudo apt install -y nodejs
+    curl -fsSL https://deb.nodesource.com/setup_20.x | -E bash -
+    apt install -y nodejs
 
 else
     echo "Unsupported OS detected. Installing Node.js 20.x using NVM..."
@@ -142,6 +142,41 @@ fi
 
 echo "✅ Node.js installed successfully:"
 node -v
+
+
+#!/bin/bash
+
+set -e
+
+echo "🔧 Installing GitHub CLI (gh)..."
+
+if command -v pacman &>/dev/null; then
+    echo "Detected Arch Linux."
+    pacman -Syu --noconfirm github-cli
+
+elif command -v dnf &>/dev/null; then
+    echo "Detected Fedora."
+    dnf install -y 'dnf-command(config-manager)'
+    dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+    dnf install -y gh
+
+elif command -v apt &>/dev/null; then
+    echo "Detected Debian/Ubuntu."
+    type -p curl >/dev/null || apt install curl -y
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+    apt update
+    apt install gh -y
+
+else
+    echo "Unsupported OS. Attempting fallback installer..."
+    curl -fsSL https://cli.github.com/install.sh | bash
+fi
+
+echo "✅ GitHub CLI installed:"
+gh --version
+
+
 
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."
