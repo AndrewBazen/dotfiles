@@ -115,6 +115,34 @@ else
   echo "Neovim installation failed."
 fi
 
+echo "🔧 Installing Node.js 20.x..."
+
+if command -v pacman &>/dev/null; then
+    echo "Detected Arch Linux."
+    sudo pacman -Syu --noconfirm nodejs npm
+
+elif command -v dnf &>/dev/null; then
+    echo "Detected Fedora."
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+    sudo dnf install -y nodejs
+
+elif command -v apt &>/dev/null; then
+    echo "Detected Debian/Ubuntu."
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt install -y nodejs
+
+else
+    echo "Unsupported OS detected. Installing Node.js 20.x using NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install 20
+    nvm use 20
+fi
+
+echo "✅ Node.js installed successfully:"
+node -v
+
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."
 FONT_DIR="$HOME/.local/share/fonts"
