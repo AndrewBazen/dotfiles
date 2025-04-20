@@ -1,70 +1,84 @@
-Write-Host "🪟 Running Windows-specific setup..."
+Write-Host "`n🪟 Running Windows-specific setup..."
 
-# Check for winget
+# Ensure winget exists
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    Write-Host "Winget is not installed. Please install it from the Microsoft Store."
+    Write-Error "Winget is not installed. Please install it from the Microsoft Store."
     exit 1
 }
 
-# install scoop
-Write-Host "🧙‍♂️ Installing Scoop..."
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+# Install Scoop
+if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    Write-Host "🧙 Installing Scoop..."
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+} else {
+    Write-Host "✅ Scoop already installed."
+}
 
-# install scoop apps
-Write-Host "📦 Installing Scoop apps..."
+# Install Scoop apps
+Write-Host "📦 Installing CLI tools via Scoop..."
 scoop bucket add extras
 scoop bucket add main
 scoop install git gh neovim curl lua starship tmux
 
-
-# Install JetBrains Nerd Font
-Write-Host "🔤 Installing JetBrains Nerd Font..."
-winget install --id NerdFonts.JetBrainsMono -e --source winget
-
-# Install Node.js 20.x
-Write-Host "🔧 Installing Node.js 20.x..."
+# Install Node.js via winget
+Write-Host "🔧 Installing Node.js 20.x via winget..."
 winget install --id OpenJS.NodeJS.LTS -e --source winget
 
-# Add Starship init to PowerShell profile
+# Install Nerd Font
+Write-Host "🔤 Installing JetBrainsMono Nerd Font..."
+winget install --id NerdFonts.JetBrainsMono -e --source winget
+
+# Set up PowerShell profile for Starship
 Write-Host "🌟 Configuring Starship prompt..."
-$profilePath = "$HOME\Program Files\PowerShell\Microsoft.PowerShell_profile.ps1"
+$profilePath = "$PROFILE"
 if (-not (Test-Path -Path $profilePath)) {
-    New-Item -ItemType File -Path $profilePath -Force
+    New-Item -ItemType File -Path $profilePath -Force | Out-Null
 }
 if (-not (Get-Content $profilePath | Select-String "starship init powershell")) {
-    Add-Content $profilePath 'Invoke-Expression (&starship init powershell)'
+    Add-Content $profilePath "`nInvoke-Expression (&starship init powershell)"
+    Write-Host "✅ Starship added to PowerShell profile."
+} else {
+    Write-Host "✅ Starship already in PowerShell profile."
 }
 
-# linking starship.toml
-Write-Host "📄 Linking Starship configuration..."
-$starshipConfPath = "$HOME\.config\starship.toml"
+# Ensure .config directory exists
+$configPath = "$HOME\\.config"
+if (-not (Test-Path $configPath)) {
+    New-Item -ItemType Directory -Path $configPath -Force | Out-Null
+}
+
+# Link Starship config
+Write-Host "📄 Linking Starship config..."
+$starshipConfPath = "$configPath\\starship.toml"
+$starshipSource = "$HOME\\dotfiles\\starship\\starship.toml"
 if (-not (Test-Path $starshipConfPath)) {
-    New-Item -ItemType SymbolicLink -Path $starshipConfPath -Target "$HOME\dotfiles\starship\starship.toml"
-    Write-Host "Starship configuration symlink created successfully."
+    New-Item -ItemType SymbolicLink -Path $starshipConfPath -Target $starshipSource -Force
+    Write-Host "✅ Starship config symlinked."
 } else {
-    Write-Host "Starship configuration symlink already exists."
+    Write-Host "✅ Starship config already exists."
 }
 
-# Configure Neovim
-Write-Host "📝 Setting up Neovim configuration..."
-$neovimConfPath = "$HOME\AppData\Local\nvim\init.vim"
-if (-not (Test-Path $neovimConfPath)) {
-    New-Item -ItemType SymbolicLink -Path $neovimConfPath -Target "$HOME\dotfiles\nvim\init.vim"
-    Write-Host "Neovim configuration symlink created successfully."
+# Link Neovim config
+Write-Host "📝 Linking Neovim config..."
+$nvimTarget = "$HOME\\dotfiles\\nvim"
+$nvimConfigPath = "$HOME\\AppData\\Local\\nvim"
+if (-not (Test-Path $nvimConfigPath)) {
+    New-Item -ItemType SymbolicLink -Path $nvimConfigPath -Target $nvimTarget -Force
+    Write-Host "✅ Neovim config symlinked."
 } else {
-    Write-Host "Neovim configuration symlink already exists."
+    Write-Host "✅ Neovim config already exists."
 }
 
-
-# Configure Tmux
-Write-Host "📦 Setting up Tmux configuration..."
-$tmuxConfPath = "$HOME\.tmux.conf"
+# Link Tmux config
+Write-Host "🔗 Linking Tmux config..."
+$tmuxTarget = "$HOME\\dotfiles\\tmux\\.tmux.conf"
+$tmuxConfPath = "$HOME\\.tmux.conf"
 if (-not (Test-Path $tmuxConfPath)) {
-    New-Item -ItemType SymbolicLink -Path $tmuxConfPath -Target "$HOME\dotfiles\tmux\.tmux.conf"
-    Write-Host "Tmux configuration symlink created successfully."
+    New-Item -ItemType SymbolicLink -Path $tmuxConfPath -Target $tmuxTarget -Force
+    Write-Host "✅ Tmux config symlinked."
 } else {
-    Write-Host "Tmux configuration symlink already exists."
+    Write-Host "✅ Tmux config already exists."
 }
 
-Write-Host "✅ Windows setup complete. Restart your terminal to see changes."
+Write-Host "`n✅ Windows setup complete! Restart your terminal to apply everything."
