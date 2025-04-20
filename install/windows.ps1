@@ -19,7 +19,7 @@ if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
 Write-Host "📦 Installing CLI tools via Scoop..."
 scoop bucket add extras
 scoop bucket add main
-scoop install git gh neovim curl lua starship tmux
+scoop install git gh neovim curl lua starship fzf ripgrep npm gcc
 
 # Install Node.js via winget
 Write-Host "🔧 Installing Node.js 20.x via winget..."
@@ -28,6 +28,18 @@ winget install --id OpenJS.NodeJS.LTS -e --source winget
 # Install Nerd Font
 Write-Host "🔤 Installing JetBrainsMono Nerd Font..."
 winget install --id NerdFonts.JetBrainsMono -e --source winget
+
+# set nerd font as default in powershell profile
+$fontName = "JetBrainsMono Nerd Font"
+$fontPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+$fontValue = (Get-ItemProperty -Path $fontPath).$fontName
+if ($fontValue) {
+    $fontValue = $fontValue -replace '\s+', ' '
+    $fontValue = $fontValue.Trim()
+    Write-Host "✅ Font '$fontName' found in registry."
+} else {
+    Write-Error "❌ Font '$fontName' not found in registry. Please install it manually."
+}
 
 # Set up PowerShell profile for Starship
 Write-Host "🌟 Configuring Starship prompt..."
