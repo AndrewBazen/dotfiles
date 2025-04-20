@@ -6,12 +6,12 @@ echo "🌐 Running common setup steps..."
 
 # Setup Git user info if not set
 if ! git config --global user.name >/dev/null; then
-    git_username=read -p "Enter your Git username: "
+    read -p "Enter your Git username: " git_username
     git config --global user.name "$git_username"
 fi
 
 if ! git config --global user.email >/dev/null; then
-    git_email=read -p "Enter your Git email: "
+    read -p "Enter your Git email: " git_email
     git config --global user.email "$git_email"
 fi
 
