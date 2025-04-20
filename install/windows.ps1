@@ -6,29 +6,17 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-# Install essential packages
-Write-Host "📦 Installing base packages..."
-$packages = @(
-    "Git.Git",
-    "Neovim.Neovim",
-    "Starship.Starship",
-    "Lua.Lua",
-    "Microsoft.VisualStudio2022BuildTools",
-    "curl.curl",
-    "GitHub.cli",
-    "npm.npm",
-    "tmux.tmux",
-    "Ripgrep.ripgrep",
-    "BurntSushi.ripgrep",
-    "fd-find.fd",
-    "Fzf.Fzf",
-    "LazyGit.LazyGit"
-)
+# install scoop
+Write-Host "🧙‍♂️ Installing Scoop..."
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
-foreach ($package in $packages) {
-    Write-Host "Installing $package..."
-    winget install --id $package -e --source winget
-}
+# install scoop apps
+Write-Host "📦 Installing Scoop apps..."
+scoop bucket add extras
+scoop bucket add main
+scoop install git gh neovim curl lua starship tmux
+
 
 # Install JetBrains Nerd Font
 Write-Host "🔤 Installing JetBrains Nerd Font..."
