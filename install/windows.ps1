@@ -6,10 +6,6 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-# Update existing packages
-Write-Host "🔄 Updating installed packages..."
-winget upgrade --all
-
 # Install essential packages
 Write-Host "📦 Installing base packages..."
 $packages = @(
@@ -17,12 +13,10 @@ $packages = @(
     "Neovim.Neovim",
     "Starship.Starship",
     "Lua.Lua",
+    "Microsoft.VisualStudio2022BuildTools",
     "curl.curl",
-    "Microsoft.WindowsTerminal",
-    "Microsoft.VisualStudioCode",
     "GitHub.cli",
     "npm.npm",
-    "Microsoft.PowerShell",
     "tmux.tmux",
     "Ripgrep.ripgrep",
     "BurntSushi.ripgrep",
@@ -62,6 +56,16 @@ if (-not (Test-Path $starshipConfPath)) {
     Write-Host "Starship configuration symlink created successfully."
 } else {
     Write-Host "Starship configuration symlink already exists."
+}
+
+# Configure Neovim
+Write-Host "📝 Setting up Neovim configuration..."
+$neovimConfPath = "$HOME\AppData\Local\nvim\init.vim"
+if (-not (Test-Path $neovimConfPath)) {
+    New-Item -ItemType SymbolicLink -Path $neovimConfPath -Target "$HOME\dotfiles\nvim\init.vim"
+    Write-Host "Neovim configuration symlink created successfully."
+} else {
+    Write-Host "Neovim configuration symlink already exists."
 }
 
 

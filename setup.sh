@@ -7,7 +7,7 @@ echo "Detecting shell environment..."
 # Windows PowerShell
 if [ -n "$PSModulePath" ]; then
   echo "Detected PowerShell. Running windows.ps1..."
-  pwsh -File ./windows.ps1
+  pwsh -File ./install/windows.ps1
   exit $?
 fi
 
