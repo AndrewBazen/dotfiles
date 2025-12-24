@@ -15,22 +15,27 @@ elif command -v dnf &>/dev/null; then
 elif command -v apt &>/dev/null; then
     echo "Detected Debian/Ubuntu."
 
-    if command -v nvim &>/dev/null; then
-        echo "Removing old Neovim..."
+    # Remove old neovim if installed via apt
+    if dpkg -l | grep -q "^ii.*neovim"; then
+        echo "Removing old Neovim from apt..."
         sudo apt remove --purge -y neovim
         sudo apt autoremove -y
     fi
 
-    cd /tmp
-
-    echo "Downloading latest Neovim AppImage..."
-    if ! wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage; then
-        echo "❗ Latest AppImage not available. Falling back to v0.10.0..."
-        wget https://github.com/neovim/neovim/releases/download/v0.10.0/nvim.appimage
+    # Install via snap for latest version
+    echo "Installing Neovim via snap (latest stable)..."
+    if ! command -v snap &>/dev/null; then
+        echo "Installing snapd..."
+        sudo apt update
+        sudo apt install -y snapd
     fi
 
-    chmod +x nvim.appimage
-    sudo mv nvim.appimage /usr/local/bin/nvim
+    sudo snap install nvim --classic
+    
+    # Ensure snap bin is in PATH
+    if [[ ":$PATH:" != *":/snap/bin:"* ]]; then
+        export PATH="$PATH:/snap/bin"
+    fi
 
 else
     echo "Unsupported OS or package manager."
@@ -38,3 +43,4 @@ else
 fi
 
 echo "✅ Neovim installed successfully:"
+nvim --version | head -n 1

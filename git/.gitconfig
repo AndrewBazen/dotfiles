@@ -1,0 +1,39 @@
+# Git Configuration
+# These settings are linked to ~/.gitconfig by the dotfiles setup
+
+[core]
+    editor = nvim
+    autocrlf = input
+    whitespace = fix
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[color]
+    ui = auto
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --oneline --graph --decorate
+    last = log -1 HEAD
+    unstage = reset HEAD --
+
+[diff]
+    colorMoved = default
+
+[merge]
+    conflictstyle = diff3
+
+[fetch]
+    prune = true
+

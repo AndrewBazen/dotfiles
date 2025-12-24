@@ -128,7 +128,7 @@ elif command -v dnf &>/dev/null; then
 
 elif command -v apt &>/dev/null; then
     echo "Detected Debian/Ubuntu."
-    curl -fsSL https://deb.nodesource.com/setup_20.x | -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     apt install -y nodejs
 
 else
@@ -200,14 +200,8 @@ else
   echo "Starship installation failed."
 fi
 
-# Setup tmux configuration
-echo "📦 Setting up tmux configuration..."
-if [ ! -L "$HOME/.tmux.conf" ]; then
-  ln -s "$HOME/dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
-  echo "Tmux configuration symlink created successfully."
-else
-  echo "Tmux configuration symlink already exists."
-fi
+# Setup tmux configuration (handled by bootstrap/link.sh)
+echo "📦 Tmux configuration will be set up during dotfile linking..."
 
 # Install LazyGit
 echo "📦 Installing LazyGit..."
@@ -253,13 +247,37 @@ else
   echo "gcc installation failed."
 fi
 
-# Add Starship to .zshrc if not already added
-if ! grep -q 'eval "$(starship init zsh)"' ~/.zshrc 2>/dev/null; then
-  echo 'eval "$(starship init zsh)"' >>~/.zshrc
+# Install zsh plugins (run as original user, not root)
+echo "🐚 Installing zsh plugins..."
+chmod +x ./install/zsh.sh
+if [ -n "$SUDO_USER" ]; then
+  sudo -u "$SUDO_USER" ./install/zsh.sh
+else
+  ./install/zsh.sh
 fi
 
-# Set Zsh as default shell if not already
-if [ "$SHELL" != "$(which zsh)" ]; then
-  echo "🐚 Changing default shell to Zsh..."
-  chsh -s "$(which zsh)"
+# Get the actual user's home directory
+if [ -n "$SUDO_USER" ]; then
+  USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+else
+  USER_HOME="$HOME"
+fi
+
+# Add Starship to .zshrc if not already added
+if ! grep -q 'eval "$(starship init zsh)"' "$USER_HOME/.zshrc" 2>/dev/null; then
+  echo 'eval "$(starship init zsh)"' >> "$USER_HOME/.zshrc"
+fi
+
+# Set Zsh as default shell if not already (for the actual user)
+if [ -n "$SUDO_USER" ]; then
+  CURRENT_SHELL=$(getent passwd "$SUDO_USER" | cut -d: -f7)
+  if [ "$CURRENT_SHELL" != "$(which zsh)" ]; then
+    echo "🐚 Changing default shell to Zsh for $SUDO_USER..."
+    chsh -s "$(which zsh)" "$SUDO_USER"
+  fi
+else
+  if [ "$SHELL" != "$(which zsh)" ]; then
+    echo "🐚 Changing default shell to Zsh..."
+    chsh -s "$(which zsh)"
+  fi
 fi

@@ -1,5 +1,12 @@
 Write-Host "`n🪟 Running Windows-specific setup..."
 
+# Get the directory where this script is located
+$DOTFILES_DIR = Split-Path -Parent $PSScriptRoot
+if (-not $DOTFILES_DIR) {
+    $DOTFILES_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+Write-Host "Dotfiles directory: $DOTFILES_DIR"
+
 # Ensure winget exists
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     Write-Error "Winget is not installed. Please install it from the Microsoft Store."
@@ -19,7 +26,7 @@ if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
 Write-Host "📦 Installing CLI tools via Scoop..."
 scoop bucket add extras
 scoop bucket add main
-scoop install git gh neovim curl lua starship fzf ripgrep npm gcc
+scoop install git gh neovim curl lua starship fzf fd ripgrep gcc lazygit
 
 # Install Node.js via winget
 Write-Host "🔧 Installing Node.js 20.x via winget..."
@@ -62,35 +69,47 @@ if (-not (Test-Path $configPath)) {
 
 # Link Starship config
 Write-Host "📄 Linking Starship config..."
-$starshipConfPath = "$configPath\\starship.toml"
-$starshipSource = "$HOME\\dotfiles\\starship\\starship.toml"
-if (-not (Test-Path $starshipConfPath)) {
-    New-Item -ItemType SymbolicLink -Path $starshipConfPath -Target $starshipSource -Force
-    Write-Host "✅ Starship config symlinked."
+$starshipConfPath = "$configPath\starship.toml"
+$starshipSource = "$DOTFILES_DIR\starship\starship.toml"
+if (Test-Path $starshipSource) {
+    if (-not (Test-Path $starshipConfPath)) {
+        New-Item -ItemType SymbolicLink -Path $starshipConfPath -Target $starshipSource -Force
+        Write-Host "✅ Starship config symlinked."
+    } else {
+        Write-Host "✅ Starship config already exists."
+    }
 } else {
-    Write-Host "✅ Starship config already exists."
+    Write-Host "⚠️ Starship config source not found at $starshipSource"
 }
 
 # Link Neovim config
 Write-Host "📝 Linking Neovim config..."
-$nvimTarget = "$HOME\\dotfiles\\nvim"
-$nvimConfigPath = "$HOME\\AppData\\Local\\nvim"
-if (-not (Test-Path $nvimConfigPath)) {
-    New-Item -ItemType SymbolicLink -Path $nvimConfigPath -Target $nvimTarget -Force
-    Write-Host "✅ Neovim config symlinked."
+$nvimTarget = "$DOTFILES_DIR\nvim"
+$nvimConfigPath = "$HOME\AppData\Local\nvim"
+if (Test-Path $nvimTarget) {
+    if (-not (Test-Path $nvimConfigPath)) {
+        New-Item -ItemType SymbolicLink -Path $nvimConfigPath -Target $nvimTarget -Force
+        Write-Host "✅ Neovim config symlinked."
+    } else {
+        Write-Host "✅ Neovim config already exists."
+    }
 } else {
-    Write-Host "✅ Neovim config already exists."
+    Write-Host "⚠️ Neovim config source not found at $nvimTarget"
 }
 
-# Link Tmux config
-Write-Host "🔗 Linking Tmux config..."
-$tmuxTarget = "$HOME\\dotfiles\\tmux\\.tmux.conf"
-$tmuxConfPath = "$HOME\\.tmux.conf"
-if (-not (Test-Path $tmuxConfPath)) {
-    New-Item -ItemType SymbolicLink -Path $tmuxConfPath -Target $tmuxTarget -Force
-    Write-Host "✅ Tmux config symlinked."
+# Link Git config
+Write-Host "🔧 Linking Git config..."
+$gitTarget = "$DOTFILES_DIR\git\.gitconfig"
+$gitConfPath = "$HOME\.gitconfig"
+if (Test-Path $gitTarget) {
+    if (-not (Test-Path $gitConfPath)) {
+        New-Item -ItemType SymbolicLink -Path $gitConfPath -Target $gitTarget -Force
+        Write-Host "✅ Git config symlinked."
+    } else {
+        Write-Host "✅ Git config already exists."
+    }
 } else {
-    Write-Host "✅ Tmux config already exists."
+    Write-Host "⚠️ Git config source not found at $gitTarget"
 }
 
 Write-Host "`n✅ Windows setup complete! Restart your terminal to apply everything."

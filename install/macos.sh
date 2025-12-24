@@ -17,13 +17,24 @@ brew upgrade
 
 # Install essential packages
 echo "📦 Installing base packages..."
-brew install neovim zsh lua5.3 lazygit lsb-release git curl starship wget unzip fzf fd-find ripgrep npm ca-certificates gnupg build-essential tmux
+brew install neovim zsh lua lazygit git curl starship wget unzip fzf fd ripgrep node gh tmux
 
 # Install JetBrains Nerd Font
 echo "🔤 Installing JetBrains Nerd Font..."
-brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono-nerd-font
 
+# Run Neovim install script for consistency
+echo "🔧 Verifying Neovim installation..."
+if ! command -v nvim &>/dev/null; then
+    echo "Neovim installation failed."
+    exit 1
+fi
+echo "Neovim: $(nvim --version | head -n 1)"
+
+# Install zsh plugins
+echo "🐚 Installing zsh plugins..."
+chmod +x ./install/zsh.sh
+./install/zsh.sh
 
 # Add Starship to .zshrc if not already added
 if ! grep -q 'eval "$(starship init zsh)"' ~/.zshrc 2>/dev/null; then
@@ -33,5 +44,5 @@ fi
 # Set Zsh as default shell if not already
 if [ "$SHELL" != "$(which zsh)" ]; then
     echo "🐚 Changing default shell to Zsh..."
-    chsh -s $(which zsh)
+    chsh -s "$(which zsh)"
 fi
